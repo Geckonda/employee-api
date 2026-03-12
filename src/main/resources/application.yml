@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/employees
+    username: postgres
+    password: 2245
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration  # где лежат ваши миграции
+    baseline-on-migrate: true  # если БД уже существует

@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: employee-db
+    restart: always
+    environment:
+      POSTGRES_DB: employees
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
