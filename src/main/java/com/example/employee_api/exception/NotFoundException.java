@@ -1,4 +1,9 @@
 package com.example.employee_api.exception;
 
-public class NotFoundException {
+public class NotFoundException
+    extends RuntimeException {
+
+    public NotFoundException(String message) {
+        super(message);
+    }
 }

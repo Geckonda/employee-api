@@ -2,6 +2,7 @@ package com.example.employee_api.service.impl;
 
 import com.example.employee_api.dto.employee.EmployeeRequest;
 import com.example.employee_api.dto.employee.EmployeeResponse;
+import com.example.employee_api.exception.NotFoundException;
 import com.example.employee_api.mapper.EmployeeMapper;
 import com.example.employee_api.model.Department;
 import com.example.employee_api.model.Employee;
@@ -63,7 +64,9 @@ public class EmployeeServiceImpl  implements EmployeeService {
 
         Employee employee = employeeRepository
                 .findById(id)
-                .orElseThrow();
+                .orElseThrow(() ->
+                        new NotFoundException("Работник с таким Id не найден: " + id)
+                );
         return  EmployeeMapper.toResponse(employee);
     }
 
