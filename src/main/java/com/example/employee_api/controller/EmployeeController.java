@@ -5,6 +5,9 @@ import com.example.employee_api.dto.employee.EmployeeRequest;
 import com.example.employee_api.dto.employee.EmployeeResponse;
 import com.example.employee_api.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +33,8 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeResponse> getAll(){
-        return employeeService.getAll();
+    public Page<EmployeeResponse> getAll(Pageable pageable){
+        return employeeService.getAll(pageable);
     }
 
     @PutMapping("/{id}")

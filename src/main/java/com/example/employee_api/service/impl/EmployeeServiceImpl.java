@@ -14,6 +14,9 @@ import com.example.employee_api.repository.PositionRepository;
 import com.example.employee_api.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,12 +74,10 @@ public class EmployeeServiceImpl  implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeResponse> getAll() {
+    public Page<EmployeeResponse> getAll(Pageable pageable) {
         return employeeRepository
-                .findAll()
-                .stream()
-                .map(EmployeeMapper::toResponse)
-                .toList();
+                .findAll(pageable)
+                .map(EmployeeMapper::toResponse);
     }
 
     @Override

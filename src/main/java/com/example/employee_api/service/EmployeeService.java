@@ -6,12 +6,15 @@ import com.example.employee_api.dto.employee.EmployeeResponse;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+
 public interface EmployeeService {
     EmployeeResponse create(EmployeeRequest request);
 
     EmployeeResponse getById(UUID id);
 
-    List<EmployeeResponse> getAll();
+    Page<EmployeeResponse> getAll(Pageable pageable);
 
     EmployeeResponse update(UUID id, EmployeeRequest request);
 
