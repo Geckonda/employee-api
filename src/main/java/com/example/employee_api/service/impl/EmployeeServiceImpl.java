@@ -14,15 +14,11 @@ import com.example.employee_api.repository.EmployeeRepository;
 import com.example.employee_api.repository.PositionRepository;
 import com.example.employee_api.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import com.example.employee_api.repository.spec.EmployeeSpecification;
-
-import java.util.List;
 import java.util.UUID;
 
 @Service

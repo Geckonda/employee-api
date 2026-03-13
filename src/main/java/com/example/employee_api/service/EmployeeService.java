@@ -3,8 +3,6 @@ package com.example.employee_api.service;
 import com.example.employee_api.dto.employee.EmployeeRequest;
 import com.example.employee_api.dto.employee.EmployeeResponse;
 import com.example.employee_api.dto.filter.EmployeeFilter;
-
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
