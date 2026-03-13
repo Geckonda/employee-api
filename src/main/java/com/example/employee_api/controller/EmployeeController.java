@@ -5,6 +5,8 @@ import com.example.employee_api.dto.employee.EmployeeRequest;
 import com.example.employee_api.dto.employee.EmployeeResponse;
 import com.example.employee_api.dto.filter.EmployeeFilter;
 import com.example.employee_api.service.EmployeeService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -22,7 +24,7 @@ public class EmployeeController {
 
     @PostMapping
     public EmployeeResponse create(
-            @RequestBody EmployeeRequest request)
+            @Valid @RequestBody EmployeeRequest request)
     {
         return employeeService.create(request);
     }
@@ -41,7 +43,7 @@ public class EmployeeController {
     @PutMapping("/{id}")
     public EmployeeResponse update(
             @PathVariable UUID id,
-            @RequestBody EmployeeRequest request){
+            @Valid @RequestBody EmployeeRequest request){
         return employeeService.update(id, request);
     }
 

@@ -93,7 +93,9 @@ public class EmployeeServiceImpl  implements EmployeeService {
     public EmployeeResponse update(UUID id, EmployeeRequest request) {
         Employee employee = employeeRepository
                 .findById(id)
-                .orElseThrow();
+                .orElseThrow(() ->
+                        new NotFoundException("Работник с таким Id не найден: " + id)
+                );
 
         employee.setFirstName(request.firstName());
         employee.setLastName(request.lastName());

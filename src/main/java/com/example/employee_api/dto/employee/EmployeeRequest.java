@@ -4,24 +4,26 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 public record EmployeeRequest(
-        @NotBlank
+        @NotBlank(message = "Имя обязательно")
         String firstName,
 
-        @NotBlank
+        @NotBlank(message = "Фамилия обязательна")
         String lastName,
 
-        @Email
+        @Email(message = "Неверный формат E-mail")
         @NotBlank
         String email,
 
+        @Size(max = 20)
         String phone,
 
-        @Positive
+        @Positive(message = "Зарплата не может быть отрицательной")
         Double salary,
 
         UUID departmentId,
