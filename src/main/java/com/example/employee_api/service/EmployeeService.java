@@ -2,6 +2,7 @@ package com.example.employee_api.service;
 
 import com.example.employee_api.dto.employee.EmployeeRequest;
 import com.example.employee_api.dto.employee.EmployeeResponse;
+import com.example.employee_api.dto.filter.EmployeeFilter;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +15,7 @@ public interface EmployeeService {
 
     EmployeeResponse getById(UUID id);
 
-    Page<EmployeeResponse> getAll(Pageable pageable);
+    Page<EmployeeResponse> getAll(EmployeeFilter filter ,Pageable pageable);
 
     EmployeeResponse update(UUID id, EmployeeRequest request);
 

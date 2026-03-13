@@ -3,6 +3,7 @@ package com.example.employee_api.controller;
 
 import com.example.employee_api.dto.employee.EmployeeRequest;
 import com.example.employee_api.dto.employee.EmployeeResponse;
+import com.example.employee_api.dto.filter.EmployeeFilter;
 import com.example.employee_api.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 
@@ -33,8 +34,8 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public Page<EmployeeResponse> getAll(Pageable pageable){
-        return employeeService.getAll(pageable);
+    public Page<EmployeeResponse> getAll(EmployeeFilter filter, Pageable pageable){
+        return employeeService.getAll(filter, pageable);
     }
 
     @PutMapping("/{id}")

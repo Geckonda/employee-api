@@ -2,6 +2,7 @@ package com.example.employee_api.service.impl;
 
 import com.example.employee_api.dto.employee.EmployeeRequest;
 import com.example.employee_api.dto.employee.EmployeeResponse;
+import com.example.employee_api.dto.filter.EmployeeFilter;
 import com.example.employee_api.exception.NotFoundException;
 import com.example.employee_api.mapper.EmployeeMapper;
 import com.example.employee_api.model.Department;
@@ -16,8 +17,10 @@ import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import com.example.employee_api.repository.spec.EmployeeSpecification;
 
 import java.util.List;
 import java.util.UUID;
@@ -74,9 +77,15 @@ public class EmployeeServiceImpl  implements EmployeeService {
     }
 
     @Override
-    public Page<EmployeeResponse> getAll(Pageable pageable) {
+    public Page<EmployeeResponse> getAll(EmployeeFilter filter, Pageable pageable) {
+       Specification<Employee> spec =
+            Specification
+                    .allOf(EmployeeSpecification.departmentEquals(filter.department()), 
+                            EmployeeSpecification.statusEquals(filter.status()),
+                            EmployeeSpecification.salaryGreaterThan(filter.minSalary()),
+                            EmployeeSpecification.salaryLessThan(filter.maxSalary()));
         return employeeRepository
-                .findAll(pageable)
+                .findAll(spec, pageable)
                 .map(EmployeeMapper::toResponse);
     }
 
