@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -33,8 +34,9 @@ public class EmployeeController {
             @PathVariable UUID id){
         return employeeService.getById(id);
     }
-
+    
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<EmployeeResponse> getAll(EmployeeFilter filter, Pageable pageable){
         return employeeService.getAll(filter, pageable);
     }
