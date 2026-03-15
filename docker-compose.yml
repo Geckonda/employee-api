@@ -1,14 +1,40 @@
 version: "3.9"
 
 services:
-
   postgres:
-    image: postgres:15
-    container_name: employee-db
+    image: postgres:16
+    container_name: employee_postgres
     restart: always
     environment:
       POSTGRES_DB: employees
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d employees"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  employee-api:
+    build: .
+    container_name: employee_api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/employees
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
