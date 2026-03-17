@@ -16,6 +16,8 @@ import com.example.employee_api.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import com.example.employee_api.repository.spec.EmployeeSpecification;
@@ -62,6 +64,7 @@ public class EmployeeServiceImpl  implements EmployeeService {
     }
 
     @Override
+    @Cacheable(value = "employee", key = "#id")
     public EmployeeResponse getById(UUID id) {
 
         Employee employee = employeeRepository
@@ -86,6 +89,7 @@ public class EmployeeServiceImpl  implements EmployeeService {
     }
 
     @Override
+    @CacheEvict(value = "employee", key = "#id")
     public EmployeeResponse update(UUID id, EmployeeRequest request) {
         Employee employee = employeeRepository
                 .findById(id)
@@ -105,6 +109,7 @@ public class EmployeeServiceImpl  implements EmployeeService {
     }
 
     @Override
+    @CacheEvict(value = "employee", key = "#id")
     public void delete(UUID id) {
         employeeRepository.deleteById(id);
     }

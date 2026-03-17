@@ -20,6 +20,12 @@ services:
       retries: 10
       start_period: 10s
 
+  redis:
+      image: redis:7
+      container_name: redis
+      ports:
+        - "6379:6379"
+        
   employee-api:
     build: .
     container_name: employee_api
