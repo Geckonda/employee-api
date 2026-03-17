@@ -25,4 +25,9 @@ public record EmployeeRequest(
         UUID departmentId,
 
         UUID positionId
-){}
+){
+
+        public EmployeeRequest(String firstName, String lastName, String email, Double salary) {
+        this(firstName, lastName, email, null, salary, null, null);
+    }
+}
