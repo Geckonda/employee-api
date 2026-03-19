@@ -4,6 +4,8 @@ import com.example.employee_api.dto.employee.EmployeeRequest;
 import com.example.employee_api.dto.employee.EmployeeResponse;
 import com.example.employee_api.dto.filter.EmployeeFilter;
 import com.example.employee_api.exception.NotFoundException;
+import com.example.employee_api.kafka.event.EmployeeCreatedEvent;
+import com.example.employee_api.kafka.producer.EmployeeEventProducer;
 import com.example.employee_api.mapper.EmployeeMapper;
 import com.example.employee_api.model.Department;
 import com.example.employee_api.model.Employee;
@@ -21,6 +23,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import com.example.employee_api.repository.spec.EmployeeSpecification;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -28,8 +31,9 @@ import java.util.UUID;
 public class EmployeeServiceImpl  implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private  final DepartmentRepository departmentRepository;
+    private final DepartmentRepository departmentRepository;
     private final PositionRepository positionRepository;
+    private final EmployeeEventProducer employeeEventProducer;
 
     @Override
     public EmployeeResponse create(EmployeeRequest request) {
@@ -60,6 +64,21 @@ public class EmployeeServiceImpl  implements EmployeeService {
                 .build();
 
         employeeRepository.save(employee);
+
+        //  Отправляем событие в Kafka о создании нового сотрудника
+        EmployeeCreatedEvent event = EmployeeCreatedEvent.builder()
+                .employeeId(employee.getId())
+                .firstName(employee.getFirstName())
+                .lastName(employee.getLastName())
+                .email(employee.getEmail())
+                .position(employee.getPosition() != null ? employee.getPosition().getName() : null)
+                .departmentId(employee.getDepartment() != null ? employee.getDepartment().getId() : null)
+                .createdAt(LocalDateTime.now())
+                .createdBy("SYSTEM")
+                .build();
+
+        employeeEventProducer.sendEmployeeCreatedEvent(event);
+
         return EmployeeMapper.toResponse(employee);
     }
 
